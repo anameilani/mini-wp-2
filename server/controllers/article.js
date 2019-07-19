@@ -1,6 +1,5 @@
 const Article= require('../models/article')
 const {ObjectId}= require('mongodb')
-const getUnique = require('../helpers/getUnique')
 
 
 class articleController{
@@ -17,6 +16,7 @@ class articleController{
 
     static getAll(req, res, next){
         Article.find({})
+        .populate('author')
         .then(articles=>{
             // console.log(articles, 'ini article')
             res.status(200).json(articles)
@@ -70,20 +70,46 @@ class articleController{
     static updatePut(req, res, next){
         console.log(req.params.title)
 
-        Article.findById(req.params.id)
-        .then(article =>{
-            console.log(article, 'article yang ketemu')
-            
-            article.title= req.body.title || article.title
-            article.thumbnail= req.body.thumbnail || article.thumbnail
-            article.content= req.body.content || article.content
-            article.tags= req.body.tags || article.tags
-            return article.save()
-        })
-        .then(article =>{
-            res.status(200).json(article)
-        })
-        .catch(next)
+        if(req.file.cloudStoragePublicUrl){
+            let input= req.body.tags.split(',')
+            let tags= [...new Set(input)]
+
+            Article.findById(req.params.id)
+            .then(article =>{
+                console.log(article, 'article yang ketemu update put')
+                
+                article.title= req.body.title || article.title
+                article.thumbnail= req.file.cloudStoragePublicUrl || article.thumbnail
+                article.content= req.body.content || article.content
+                article.tags= tags || article.tags
+                article.status= req.params.status
+                return article.save()
+            })
+            .then(article =>{
+                res.status(200).json(article)
+            })
+            .catch(next)
+        }else{
+            let input= req.body.tags.split(',')
+            let tags= [...new Set(input)]
+
+            Article.findById(req.params.id)
+            .then(article =>{
+                console.log(article, 'article yang ketemu update put')
+                
+                article.title= req.body.title || article.title
+                article.thumbnail= req.body.thumbnail || article.thumbnail
+                article.content= req.body.content || article.content
+                article.tags= tags || article.tags
+                article.status= req.params.status
+                return article.save()
+            })
+            .then(article =>{
+                res.status(200).json(article)
+            })
+            .catch(next)
+        }
+
     }
 
     static updatePatch(req, res, next){
@@ -98,6 +124,24 @@ class articleController{
         Article.findByIdAndDelete(ObjectId(req.params.id))
         .then(article=>{
             res.status(200).json(article)
+        })
+        .catch(next)
+    }
+
+    static searchByTag(req, res, next){
+        let tag= req.query.tag.toLowerCase()
+
+        Article.find({})
+        .populate('author')
+        .then(articles =>{
+            let data=[]
+            articles.forEach(article =>{
+                if(article.tags.includes(tag)){
+                    data.push(article)
+                }
+            })
+
+            res.status(200).json(data)
         })
         .catch(next)
     }

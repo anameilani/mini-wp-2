@@ -15,7 +15,7 @@
                 <div class="navbar-item" >
                     <div class="field is-grouped" >
                     <p class="control" >
-                        <a class="button is-link is-outlined" @click.prevent="logout" style="magin-right: 20%;">
+                        <a class="button is-danger is-outlined" @click.prevent="logout" style="magin-right: 20%;">
                             <i class="fas fa-sign-out-alt" style="font-size: 20px;"></i>
                         </a>
                     </p>
@@ -63,8 +63,12 @@
         </aside>
         
                 <div class="column is-10">
-                    <allPost :condition="condition" @changeComponent="changeCondition"></allPost>
-                    <createArticle :condition="condition" @changeComponent="changeCondition"></createArticle>
+                    <allPost 
+                        :condition="condition" 
+                        @changeComponent="changeCondition"
+                        
+                    ></allPost>
+                    <formAddArticle :condition="condition" @changeComponent="changeCondition"></formAddArticle>
                 </div>
             </div>
         </div>
@@ -74,19 +78,21 @@
 </template>
 
 <script>
-import createArticle from './create.vue'
+import axios from './api/api.js'
+import formAddArticle from './formAddArticle.vue'
 import allPost from './allPost.vue'
 
 export default {
     name:'home',
     props: ['page'],
     components:{
-        createArticle,
+        formAddArticle,
         allPost
     },
     data(){
         return{
-            condition:'home'
+            condition:'home',
+            allArticles:[],
         }
     },
     methods:{
@@ -102,8 +108,9 @@ export default {
         },
         changeCondition(value){
             this.condition= value
-        }
-        ,
+            
+        },
+       
         logout(){
             Swal.fire({
                 title: 'Are you sure to sign out?',
@@ -133,6 +140,9 @@ export default {
                 }
             })
         },
+    },
+    created() {
+        
     }
 
 }

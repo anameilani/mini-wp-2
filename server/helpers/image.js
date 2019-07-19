@@ -19,7 +19,7 @@ const getPublicUrl = (filename) => {
   return `https://storage.googleapis.com/${CLOUD_BUCKET}/${filename}`
 }
 
-console.log(getPublicUrl, 'ini getpublicurl')
+// console.log(getPublicUrl, 'ini getpublicurl')
 
 const sendUploadToGCS = (req, res, next) => {
   if (!req.file) {
@@ -44,7 +44,7 @@ const sendUploadToGCS = (req, res, next) => {
     req.file.cloudStorageObject = gcsname
     file.makePublic().then(() => {
       req.file.cloudStoragePublicUrl = getPublicUrl(gcsname)
-      console.log(req.file.cloudStoragePublicUrl, 'cloud storage di image')
+      // console.log(req.file.cloudStoragePublicUrl, 'cloud storage di image')
       next()
     })
   })
