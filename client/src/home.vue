@@ -31,28 +31,28 @@
             <p class="menu-label is-hidden-touch">Navigation</p>
             <ul class="menu-list">
             <li>
-                <a href="" class="">
+                <a href="" class="has-background-grey-lighter" >
                 <span class="icon"><i class="fa fa-home"></i></span> Home
                 </a>
             </li>
             <li>
-                <a href="" class="#" @click.prevent="showCreate">
+                <a href="" @click.prevent="showCreate">
                 <span class="icon"><i class="fa fa-plus"></i></span> New Post
                 </a>
             </li>
             <li>
-                <a href="" class="is-active">
+                <a href="" class="is-active" @click.prevent="showMyPublish">
                 <span class="icon"><i class="fa fa-table"></i></span> My Post
                 </a>
 
                 <ul>
                 <li>
-                    <a href="">
+                    <a href="" @click.prevent="showMyPublish">
                     <span class="icon is-small"><i class="fa fa-link"></i></span> Published
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="" @click.prevent="showMyDraft">
                     <span class="icon is-small"><i class="fa fa-link"></i></span> Draft
                     </a>
                 </li>
@@ -64,11 +64,37 @@
         
                 <div class="column is-10">
                     <allPost 
+                        :condition="condition"
+                        @changeComponent="changeCondition"
+                    ></allPost>
+
+                    <formAddArticle 
                         :condition="condition" 
                         @changeComponent="changeCondition"
-                        
-                    ></allPost>
-                    <formAddArticle :condition="condition" @changeComponent="changeCondition"></formAddArticle>
+                    ></formAddArticle>
+
+                    <publishedPost 
+                        :condition="condition" 
+                        @changeComponent="showEdit"
+                    ></publishedPost>
+
+                    <draftPost 
+                        :condition="condition" 
+                        @changeComponent="showEditDraft"
+                    ></draftPost>
+
+                    <formEditArticlePublish 
+                        :condition="condition" 
+                        :article="currentArticle"
+                        @changeComponent="changeCondition"
+                    ></formEditArticlePublish>
+
+                    <formEditArticleDraft
+                        :condition="condition"
+                        :article="currentArticle"
+                        @changeComponent="changeCondition"
+                    ></formEditArticleDraft>
+
                 </div>
             </div>
         </div>
@@ -81,18 +107,27 @@
 import axios from './api/api.js'
 import formAddArticle from './formAddArticle.vue'
 import allPost from './allPost.vue'
+import publishedPost from './publishedPost.vue'
+import draftPost from './draftPost.vue'
+import formEditArticlePublish from './formEditArticlePublished.vue'
+import formEditArticleDraft from './formEditArticleDraft.vue'
 
 export default {
     name:'home',
     props: ['page'],
     components:{
         formAddArticle,
-        allPost
+        allPost,
+        publishedPost,
+        draftPost,
+        formEditArticlePublish,
+        formEditArticleDraft
     },
     data(){
         return{
             condition:'home',
             allArticles:[],
+            currentArticle:{}
         }
     },
     methods:{
@@ -100,15 +135,26 @@ export default {
             this.condition= 'home'
         },
         showCreate(){
-            console.log('masuk show create');
-            
             this.condition= 'create'
-            console.log(this.condition);
-
+        },
+        showMyPublish(){
+            this.condition= 'mypublished'
+        },
+        showMyDraft(){
+            this.condition= 'mydraft'
+        },
+        showEdit(val, article){
+            this.condition= val
+            this.currentArticle= article
+            console.log(this.currentArticle, 'ini current article')
+        },
+        showEditDraft(val, article){
+            this.condition= val
+            this.currentArticle= article
         },
         changeCondition(value){
+            console.log(value, 'ini change condition')
             this.condition= value
-            
         },
        
         logout(){

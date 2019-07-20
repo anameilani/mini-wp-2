@@ -5,18 +5,20 @@ const {ObjectId}= require('mongodb')
 class articleController{
 
     static getStatus(req, res, next){
-        // console.log('masuk get publish', req.params.id)
-        Article.find({author: ObjectId(req.params.id), status: req.params.status})
+        console.log('masuk get publish', req.decode.id, req.params.status)
+        Article.find({author: req.decode.id, status: req.params.status})
+        .sort({createdAt: -1})
         .then(articles=>{
-            // console.log(articles)
+            console.log(articles)
             res.status(200).json(articles)
         })
         .catch(next)
     }
 
     static getAll(req, res, next){
-        Article.find({})
+        Article.find({status: 'published'})
         .populate('author')
+        .sort({updatedAt: -1})
         .then(articles=>{
             // console.log(articles, 'ini article')
             res.status(200).json(articles)
@@ -70,7 +72,7 @@ class articleController{
     static updatePut(req, res, next){
         console.log(req.params.title)
 
-        if(req.file.cloudStoragePublicUrl){
+        if(req.file){
             let input= req.body.tags.split(',')
             let tags= [...new Set(input)]
 
@@ -133,6 +135,7 @@ class articleController{
 
         Article.find({})
         .populate('author')
+        .sort({createdAt: -1})
         .then(articles =>{
             let data=[]
             articles.forEach(article =>{

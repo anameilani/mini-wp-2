@@ -20,21 +20,17 @@
             </div>
             <a class="button is-danger is-rounded" @click="fetchAllPost">Reset</a>
         </div>
-        <div class="columns" v-if="filterArticle.length != 0">
-            <div class="column is-half" v-for="data in filterArticle" :key="data._id">
-                <cardArticle :article="data" @searchTag="fetchSearchTag"></cardArticle>
+        <div class="row" v-if="filterArticle.length != 0">
+            <div class="colums" >
+                <div class="column is-half" v-for="data in filterArticle" :key="data._id" >
+                    <cardArticle :article="data" @searchTag="fetchSearchTag"></cardArticle>
+                </div>
             </div>
         </div>
 
         <div class="columns" v-if="filterArticle.length == 0">
-            <div class="column is-half" >
-                <div class="card">
-                    <div class="card-content">
-                        <div class="content">
-                            Article Not Found
-                        </div>
-                    </div>
-                </div>
+            <div class="column" >
+                <h3 style="text-align:center">Article Not Found</h3>
             </div>
         </div>
     </div>
@@ -71,9 +67,9 @@ export default {
                 }
             })
             .then(({data}) =>{
-                console.log('ini data hasil fetch', data)
+                // console.log('ini data hasil fetch', data)
                 this.articles= data
-                console.log(this.articles, 'ini setelah fetch')
+                // console.log(this.articles, 'ini setelah fetch')
             })
             .catch(err => {
                 console.log('error fetch all data'),
@@ -90,7 +86,7 @@ export default {
                  }
              })
              .then(({data}) => {
-                 console.log(data)
+                //  console.log(data)
                  this.articles= data
              })
              .catch(err =>{
@@ -99,9 +95,14 @@ export default {
              })
         }
     },
+    watch:{
+
+        condition: function(value){
+            // console.log(value, 'ini value condition')
+            this.fetchAllPost()
+        }
+    },
     mounted(){
-        // this.filteredArticles= this.articles
-        // console.log(this.articles, '=====')
         this.fetchAllPost()
     },
     computed:{
@@ -109,7 +110,7 @@ export default {
             // console.log(this.articles, 'this articles')
             if(this.type == 'title'){
                 let dataFilter= this.articles.filter(article => {
-                    console.log(article.title, this.keyword, '====')
+                    // console.log(article.title, this.keyword, '====')
                     return article.title.toLowerCase().includes(this.keyword.toLowerCase())
                 })
 
@@ -119,14 +120,23 @@ export default {
                
             }
             else if(this.type == 'tag'){
-                let dataFilter= this.articles.filter(article => {
-                    console.log(article.tags, this.keyword, '====')
-                    return article.tags.filter.toLowerCase().includes(this.keyword.toLowerCase())
+                console.log('masuk sini')
+                // let dataFilter= this.articles.filter(article => {
+                //     console.log(article.tags, this.keyword, '====')
+                //     return article.tags.filter.toLowerCase().includes(this.keyword.toLowerCase())
+                let dataFilter=[]
+                return this.articles.forEach(article =>{
+                    if(article.tags.includes(this.keyword)){
+                         return dataFilter.push(article)
+                    }
                     
                 })
+                    
+                
 
-                if(dataFilter.length === 0) return this.articles
-                    else return dataFilter
+                // if(dataFilter.length === 0) return this.articles
+                //     else 
+                    return dataFilter
             }
         }
     }

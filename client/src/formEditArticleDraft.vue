@@ -1,5 +1,5 @@
 <template>
-    <div v-if="condition == 'create'" style="margin-top: 2%">
+    <div v-if="condition == 'editdraft'" style="margin-top: 2%">
         <!-- Inner navbar -->
         <div class="columns is-mobile is-centered">
             <div class="column is-four-fifths">
@@ -11,7 +11,7 @@
                             </a>
                         </div>
                         <div class="navbar-item">
-                            <a class="nav-link" href="#" @click.prevent="showHome">
+                            <a class="nav-link" href="#" @click.prevent="close">
                                 <i class="fas fa-times"></i> Close
                             </a>
                         </div>
@@ -111,62 +111,60 @@ export default {
         }
     },
     methods:{
-        showHome(){
-            this.$emit('changeComponent', 'home')
-        },
-        showDraft(){
-            this.$emit('changeComponent', 'draft')
+        close(){
+            console.log('close edit draft ketrigger')
+            this.$emit('changeComponent', 'mydraft')
         },
         setThumbnail(){
             this.article.thumbnail= event.target.files[0]
             console.log(this.article.thumbnail)
         },
         postArticle(){
-             console.log('masuk post article')
-             let tags= this.article.tags.split(';')
+            console.log('masuk save article')
+             
              let formData = new FormData()
                  formData.append('title', this.article.title)
                  formData.append('thumbnail', this.article.thumbnail)
-                 formData.append('tags', tags)
+                 formData.append('tags', this.article.tags)
                  formData.append('content', this.article.content)
-
+             
             axios({
                 url: `/articles/${this.article._id}/published`,
                 method: "put",
                 data: formData,
                 headers:{
                     'token': localStorage.token
-                }
-            })
+                    }
+                })
                 .then(({data})=>{
                     console.log(data)
                     Swal.fire(
-                        'Your article have been published!',
+                        'Your article have been publish!',
                         'Published!',
                         'success'
                     )
-
-                    this.showHome()
+                    this.$emit('changeComponent', 'home')
                     
                 })
                 .catch(function(err){
+                    console.log('masuk error draft')
+                    console.log(err)
+
                     Swal.fire({
                         type: 'error',
                         title: 'Oops...',
-                        text: 'Fill All Field!',
+                        text: 'Check What You Filled in!',
                     })
-                        console.log('masuk error publish')
-                        console.log(err)
+                     
                 })
-
         },
         saveArticle(){
             console.log('masuk save article')
-             let tags= this.article.tags.split(';')
+             
              let formData = new FormData()
                  formData.append('title', this.article.title)
                  formData.append('thumbnail', this.article.thumbnail)
-                 formData.append('tags', tags)
+                 formData.append('tags', this.article.tags)
                  formData.append('content', this.article.content)
              
             axios({
@@ -175,8 +173,8 @@ export default {
                 data: formData,
                 headers:{
                     'token': localStorage.token
-                }
-            })
+                    }
+                })
                 .then(({data})=>{
                     console.log(data)
                     Swal.fire(
@@ -184,18 +182,19 @@ export default {
                         'Published!',
                         'success'
                     )
-
-                    this.showDraft()
+                        this.close()
                     
                 })
                 .catch(function(err){
+                    console.log('masuk error draft')
+                    console.log(err)
+
                     Swal.fire({
                         type: 'error',
                         title: 'Oops...',
-                        text: 'Fill All Field!',
+                        text: 'Check What You Filled in!',
                     })
-                        console.log('masuk error draft')
-                        console.log(err)
+                    
                 })
         }
 

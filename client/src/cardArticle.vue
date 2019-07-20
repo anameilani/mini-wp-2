@@ -51,6 +51,7 @@ export default {
     created(){
         this.createdDate= moment(this.article.createdDate).format("dddd, MMMM Do YYYY")
     }
+    
 }
 </script>
 
