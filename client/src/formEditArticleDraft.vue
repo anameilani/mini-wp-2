@@ -103,7 +103,7 @@ import "vue-wysiwyg/dist/vueWysiwyg.css";
 import axios from './api/api.js'
 
 export default {
-    name:'editArticle',
+    name:'editDraftArticle',
     props:['condition', 'article'],
     data(){
         return {
@@ -182,7 +182,7 @@ export default {
                         'Published!',
                         'success'
                     )
-                        this.close()
+                        this.$emit('changeComponent', 'mydraft')
                     
                 })
                 .catch(function(err){

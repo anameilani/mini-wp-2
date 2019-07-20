@@ -1,20 +1,23 @@
 <template>
     <div  class="container" v-if="condition == 'mypublished'">
+        <h3 id="title">My Published Articles</h3>
+
         <!-- Card Article -->
-        <div id="publish-card" class="card" v-for="article in mypublishedArticles" :key="article._id">
-            <div class="card-content">
+        <div v-for="article in mypublishedArticles" :key="article._id">
+        <div id="publish-card" class="card is-paddingless" >
+            <div class="card-content is-paddingless">
                 <div class="content columns">
                     <div class="column is-one-quarter">
-                        <figure class="image is-64x64">
+                        <figure class=" is-48x48">
                             <img :src="article.thumbnail">
                         </figure>
                     </div>
-                    <div class="column is-half">
+                    <div class="column is-half" style="margin-top: 10px">
                         <p style="font-weight: bold">{{article.title}}</p>
                         <p>Last update: {{new Date(article.updatedAt).toLocaleDateString('en-US',
                                         { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}}</p>
                     </div>
-                    <div class="column is-one-quarter">
+                    <div class="column is-one-quarter" style="margin-top: 5%">
                         <a @click.prevent="toEdit(article)">
                             <i class="fas fa-edit" style="font-size: 22px"></i> |
                         </a>
@@ -24,6 +27,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         </div>
         
     </div>
@@ -114,7 +118,14 @@ export default {
 </script>
 
 <style scoped>
-    #published-card{
-        margin-top: 30%
-    }
+   #publish-card{
+       margin-bottom: 20px;
+   }
+    #title {
+       margin-top: 3%;
+       margin-bottom: 2%;
+       text-align: center;
+       font-size: 24px;
+       font-weight: bold
+   }
 </style>

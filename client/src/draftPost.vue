@@ -1,11 +1,12 @@
 <template>
-    <div  class="container" v-if="condition == 'mydraft'">
+    <div v-if="condition == 'mydraft'">
+        <h3 id="title">My Draft Articles</h3>
         <!-- Card Article -->
         <div id="publish-card" class="card" v-for="article in mydraftPosts" :key="article._id">
-            <div class="card-content">
+            <div class="card-content is-paddingless">
                 <div class="content columns">
                     <div class="column is-one-quarter">
-                        <figure class="image is-64x64">
+                        <figure class=" is-64x64">
                             <img :src="article.thumbnail">
                         </figure>
                     </div>
@@ -14,12 +15,15 @@
                         <p>Created date: {{new Date(article.createdAt).toLocaleDateString('en-US',
                                         { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}}</p>
                     </div>
-                    <div class="column is-one-quarter">
-                        <a class="button">
-                            <i class="fas fa-share"></i> Preview
+                    <div class="column is-one-quarter" style="margin-top:3%">
+                        <a class="button is-link is-rounded" @click="toPreview(article)">
+                            <i class="fas fa-share"></i> Preview 
+                        </a>
+                        <a @click.prevent="upload(article._id)">
+                            <i class="fas fa-upload" style="font-size: 22px; margin-top:5px"></i> |
                         </a>
                         <a @click.prevent="toEdit(article)">
-                            <i class="fas fa-edit" style="font-size: 22px"></i> |
+                            <i class="fas fa-edit" style="font-size: 22px; margin-top:5px"></i> |
                         </a>
                         <a @click.prevent="remove(article._id, article.title)">
                             <i class="fas fa-trash-alt" style="font-size: 22px"></i>
@@ -45,7 +49,10 @@ export default {
     },
     methods:{
         toEdit(value){
-          this.$emit('changeComponent', 'editpublish', value)
+          this.$emit('changeComponent', 'editdraft', value)
+        },
+        toPreview(value){
+             this.$emit('changeComponent', 'preview', value)
         },
         fetchDrat(){
             console.log('masuk fetch draft')
@@ -64,6 +71,26 @@ export default {
                 console.log('error fetch draft article')
                 console.log(err)
             })
+        },
+        upload(id){
+            axios({
+                url: `/articles/${id}`,
+                method: 'patch',
+                data:{
+                    field: 'status',
+                    value: 'published'
+                },
+                headers:{
+                    'token': localStorage.token
+                }
+            })
+            .then(({data}) =>{
+                this.$emit('toHome', 'home')
+            })
+            .catch(err => {
+                console.log('error post article')
+                console.log(err)
+            })  
         },
         remove(id, title){
             Swal.fire({
@@ -111,5 +138,11 @@ export default {
 </script>
 
 <style scoped>
-   
+   #title {
+       margin-top: 3%;
+       margin-bottom: 2%;
+       text-align: center;
+       font-size: 24px;
+       font-weight: bold
+   }
 </style>

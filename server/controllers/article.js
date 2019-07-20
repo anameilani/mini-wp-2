@@ -7,6 +7,7 @@ class articleController{
     static getStatus(req, res, next){
         console.log('masuk get publish', req.decode.id, req.params.status)
         Article.find({author: req.decode.id, status: req.params.status})
+        .populate('author')
         .sort({createdAt: -1})
         .then(articles=>{
             console.log(articles)
@@ -47,26 +48,13 @@ class articleController{
             tags: tags,
             status: req.params.status
         })
-        console.log('masuk create')
-            Article.findOne({title: req.body.title})
-            .then(data=>{
-                if(data){
-                    Article.findByIdAndUpdate(data._id,{
-                        title: req.body.title,
-                        thumbnail: req.body.thumbnail,
-                        content: req.body.content,
-                        tags: req.body.tags,
-                        status: req.params.status,
-                    })
-                }else{
-                    newArticle.save()
-                    .then(article=>{
-                        res.status(200).json(article)
-                    })
-                    .catch(next)
-                }
+        
+            newArticle.save()
+            .then(article=>{
+                res.status(201).json(article)
             })
             .catch(next)
+
     }
 
     static updatePut(req, res, next){
@@ -97,7 +85,7 @@ class articleController{
 
             Article.findById(req.params.id)
             .then(article =>{
-                console.log(article, 'article yang ketemu update put')
+                // console.log(article, 'article yang ketemu update put')
                 
                 article.title= req.body.title || article.title
                 article.thumbnail= req.body.thumbnail || article.thumbnail
@@ -135,7 +123,7 @@ class articleController{
 
         Article.find({})
         .populate('author')
-        .sort({createdAt: -1})
+        .sort({updatedAt: -1})
         .then(articles =>{
             let data=[]
             articles.forEach(article =>{

@@ -76,7 +76,12 @@
                 </form>
 
                 <h2 id="text-other">Login With Another Account:</h2><br>
-                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                <g-signin-button
+                    :params="googleSignInParams"
+                    @success="onSignInSuccess"
+                    @error="onSignInError">
+                    <i class="fab fa-google"></i> Sign in with Google
+                </g-signin-button>
 
             </div>
         </div>
@@ -95,6 +100,9 @@ export default {
             user:{
                 email:'',
                 password:''
+            },
+            googleSignInParams: {
+                client_id: '1036560879353-q3uag856la0eg437bfv7o742pafl5bl9.apps.googleusercontent.com'
             }
         }
     },
@@ -133,27 +141,37 @@ export default {
             })
 
         },
-        onSignIn(googleUser) {
-          console.log('masuk google sign in')
+        onSignInSuccess (googleUser) {
+            const profile = googleUser.getBasicProfile() // etc etc
             const idToken= googleUser.getAuthResponse().id_token
-             axios({
+
+            axios({
                 url: `/users/loginGoogle`,
                 method: 'post',
-                data:{idToken}
+                data:{
+                    idToken: idToken
+                    }
              })
-             .done(function(Data){
-               console.log(Data)
+             .then(({data}) => {
+                console.log('success login')
+
                 this.user.email=''
                 this.user.password=''
                 localStorage.setItem('name', data.name)
                 localStorage.setItem('token', data.token)
                 this.showHome()
-             })
-             .fail(function(err){
-              console.log(err)
-          
-             })
-          }
+
+                })
+            .catch(function(err){
+                console.log('masuk error login')
+                console.log(err, 'ini errroorrrr')
+                })
+
+            },
+        onSignInError (error) {
+            console.log('error login google')
+            console.log(error)
+            }
         
 
     }
@@ -195,6 +213,15 @@ label{
     color: white;
     font-weight: bold;
 
+}
+.g-signin-button {
+  /* This is where you control how the button looks. Be creative! */
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 3px;
+  background-color: #3c82f7;
+  color: #fff;
+  box-shadow: 0 3px 0 #0f69ff;
 }
 
 

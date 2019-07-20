@@ -62,39 +62,61 @@
             </ul>
         </aside>
         
-                <div class="column is-10">
+                <div class="column is-9" style="margin-left:4%">
+                    <!-- Show All Published Post -->
                     <allPost 
                         :condition="condition"
-                        @changeComponent="changeCondition"
+                        :inputTag="tag"
+                        @changeComponent="changeConditionWithVal"
                     ></allPost>
-
+                    
+                    <!-- Form Add New Article -->
                     <formAddArticle 
                         :condition="condition" 
                         @changeComponent="changeCondition"
                     ></formAddArticle>
 
+                    <!-- Show All My Published Articles -->
                     <publishedPost 
                         :condition="condition" 
                         @changeComponent="showEdit"
                     ></publishedPost>
 
+                    <!-- Show All My Draft Articles -->
                     <draftPost 
                         :condition="condition" 
-                        @changeComponent="showEditDraft"
+                        @changeComponent="changeConditionWithVal"
+                        @toHome="changeCondition"
                     ></draftPost>
 
+                    <!-- Form to Edit Published Article -->
                     <formEditArticlePublish 
                         :condition="condition" 
                         :article="currentArticle"
                         @changeComponent="changeCondition"
                     ></formEditArticlePublish>
 
+                    <!-- Form to Edit Draft Article -->
                     <formEditArticleDraft
                         :condition="condition"
                         :article="currentArticle"
                         @changeComponent="changeCondition"
                     ></formEditArticleDraft>
 
+                    <!-- Preview Draft Article -->
+                    <preview
+                        :condition="condition"
+                        :article="currentArticle"
+                        @changeComponent="changeCondition"
+                    ></preview>
+
+                    <!-- View Full Article -->
+                    <viewFullArticle
+                        :condition="condition"
+                        :article="currentArticle"
+                        @searchTag= "triggerSearchTag"
+                        @changeTag="changeCurrentTag"
+                    ></viewFullArticle>
                 </div>
             </div>
         </div>
@@ -111,6 +133,8 @@ import publishedPost from './publishedPost.vue'
 import draftPost from './draftPost.vue'
 import formEditArticlePublish from './formEditArticlePublished.vue'
 import formEditArticleDraft from './formEditArticleDraft.vue'
+import preview from './preview.vue'
+import viewFullArticle from './viewFullArticle.vue'
 
 export default {
     name:'home',
@@ -121,13 +145,16 @@ export default {
         publishedPost,
         draftPost,
         formEditArticlePublish,
-        formEditArticleDraft
+        formEditArticleDraft,
+        preview,
+        viewFullArticle
     },
     data(){
         return{
             condition:'home',
             allArticles:[],
-            currentArticle:{}
+            currentArticle:{},
+            tag:''
         }
     },
     methods:{
@@ -146,15 +173,25 @@ export default {
         showEdit(val, article){
             this.condition= val
             this.currentArticle= article
-            console.log(this.currentArticle, 'ini current article')
+            
         },
-        showEditDraft(val, article){
+        changeConditionWithVal(val, article){
             this.condition= val
             this.currentArticle= article
+            console.log(this.currentArticle, this.condition, 'ini current article')
         },
         changeCondition(value){
             console.log(value, 'ini change condition')
             this.condition= value
+        },
+        triggerSearchTag(val, tag){
+            this.condition= val
+            this.tag= tag
+           
+            console.log('ini tag di home', tag)
+        },
+        changeCurrentTag(tag){
+            this.tag=''
         },
        
         logout(){
@@ -185,10 +222,7 @@ export default {
                 
                 }
             })
-        },
-    },
-    created() {
-        
+        }
     }
 
 }

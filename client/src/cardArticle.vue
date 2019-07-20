@@ -15,7 +15,7 @@
                 </div>
 
                 <div class="content">
-                    <p v-html="article.content"></p>
+                    <p v-html="content"></p><span><p @click="triggerReadmore">...Readmore</p></span>
                     <div class="tags">
                         <span v-for="(tag, index) in article.tags" 
                             :key="index"
@@ -24,8 +24,7 @@
                             <a style="color: white">{{tag}}</a>
                         </span>
                     </div>
-                    <br>
-                    <p>Posted on: {{createdDate}}</p>
+                    <p style="font-size: 14px">Posted on: {{createdDate}}</p>
                 </div>
             </div>
         </div>
@@ -40,16 +39,21 @@ export default {
     props: ['article'],
     data(){
         return {
-            createdDate:''
+            createdDate:'',
+            content:''
         }
     },
     methods:{
         triggerSearch(tag){
             this.$emit('searchTag', tag)
+        },
+        triggerReadmore(){
+            this.$emit('toReadmore')
         }
     },
-    created(){
+    mounted(){
         this.createdDate= moment(this.article.createdDate).format("dddd, MMMM Do YYYY")
+        this.content= this.article.content.substring(0,200)
     }
     
 }

@@ -1,5 +1,6 @@
 <template>
     <div v-if="condition == 'home'">
+        
         <div class="field is-grouped column is-three-fifths is-offset-one-fifth">
             <div class="field-label is-normal">
                 <label class="label">Keyword: </label>
@@ -21,14 +22,18 @@
             <a class="button is-danger is-rounded" @click="fetchAllPost">Reset</a>
         </div>
         <div class="row" v-if="filterArticle.length != 0">
-            <div class="colums" >
+            <div class="colums  is-centered" >
                 <div class="column is-half" v-for="data in filterArticle" :key="data._id" >
-                    <cardArticle :article="data" @searchTag="fetchSearchTag"></cardArticle>
+                    <cardArticle 
+                        :article="data" 
+                        @searchTag="fetchSearchTag"
+                        @toReadmore="showReadmore(data)"
+                        ></cardArticle>
                 </div>
             </div>
         </div>
 
-        <div class="columns" v-if="filterArticle.length == 0">
+        <div class="columns " v-if="filterArticle.length == 0">
             <div class="column" >
                 <h3 style="text-align:center">Article Not Found</h3>
             </div>
@@ -42,7 +47,7 @@ import cardArticle from './cardArticle.vue'
 
 export default {
     name: 'allPost',
-    props:[ 'condition'],
+    props:[ 'condition', 'inputTag'],
     components:{
         cardArticle
     },
@@ -54,6 +59,9 @@ export default {
         }
     },
     methods:{
+        showReadmore(article){
+            this.$emit('changeComponent', 'readmore', article)
+        },
         chooseType(event){
             this.type= event.target.value
         },
@@ -88,6 +96,7 @@ export default {
              .then(({data}) => {
                 //  console.log(data)
                  this.articles= data
+                 this.$emit('changeTag','')
              })
              .catch(err =>{
                  console.log('error serach tag')
@@ -98,11 +107,17 @@ export default {
     watch:{
 
         condition: function(value){
-            // console.log(value, 'ini value condition')
+           if(this.condition =='home' && this.inputTag == '')
             this.fetchAllPost()
+        },
+        inputTag : function(value){
+            if(this.inputTag !=''){
+                this.fetchSearchTag(this.inputTag)
+            }
         }
+        
     },
-    mounted(){
+    created(){
         this.fetchAllPost()
     },
     computed:{

@@ -120,7 +120,7 @@ export default {
             this.$emit('changeComponent', 'home')
         },
         showDraft(){
-            this.$emit('changeComponent', 'draft')
+            this.$emit('changeComponent', 'mydraft')
         },
         setThumbnail(){
             this.article.thumbnail= event.target.files[0]
@@ -190,7 +190,7 @@ export default {
                         'success'
                     )
 
-                    this.showHome()
+                    this.showDraft()
                     
                 })
                 .catch(function(err){
