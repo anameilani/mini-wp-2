@@ -1,7 +1,7 @@
 <template>
     <div v-if="page == 'register'" id="register-page">
         <nav class="navbar is-transparent" style="background: none;">
-            <div class="navbar-brand" @click="showLanding" id="icon-group">
+            <div class="navbar-brand" @click.prevent="showLanding" id="icon-group">
                 <a href=""  id="logo-icon">
                     <i class="fas fa-blog"></i>
                 </a>
@@ -14,12 +14,12 @@
                 <div class="navbar-item">
                     <div class="field is-grouped" style="magin-right: 30px;">
                     <p class="control">
-                        <a class="button is-link is-outlined" @click="showLogin">
+                        <a class="button is-link is-outlined" @click.prevent="showLogin">
                             Log In
                         </a>
                     </p>
                     <p class="control">
-                        <a class="button is-success is-outlined" @click="showRegister">
+                        <a class="button is-success is-outlined" @click.prevent="showRegister">
                             Get Started
                         </a>
                     </p>
@@ -44,7 +44,7 @@
             <div class="column is-4 is-offset-1" style="margin-top:5%">
                 <h1 id="signup-text">Sign Up</h1>
                 <!-- Form Register Section -->
-                <p v-if="status" class="is danger" style="color: green; font-size: 20px;"> Success Resister New Account. Please <span><a href="" @click="showLogin">Sign In</a></span></p>
+                <p v-if="status" class="is danger" style="color: green; font-size: 18px;"> Success Resister New Account. Please <span><a href="" @click.prevent="showLogin">Sign In</a></span></p>
                 <form @submit.prevent="register">
                     <div class="field">
                         <label class="label">Name</label>

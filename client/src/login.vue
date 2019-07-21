@@ -44,7 +44,7 @@
             <div class="column is-4 is-offset-1" style="margin-top:5%;">
                 <h1 id="signin-text">Sign In</h1>
                 <!-- Form Register Section -->
-                
+                <br><h5 v-if="errorStatus" id="text-error">Please Check Your Passwor/Email!</h5>
                 <form @submit.prevent="login">
                     <div class="field">
                         <label class="label">Email</label>
@@ -74,7 +74,7 @@
                     </div>
                     <input type="submit" class="button is-danger" style="margin-left:40%" value="Sign In" >
                 </form>
-
+                
                 <h2 id="text-other">Login With Another Account:</h2><br>
                 <g-signin-button 
                     :params="googleSignInParams"
@@ -103,7 +103,8 @@ export default {
             },
             googleSignInParams: {
                 client_id: '1036560879353-q3uag856la0eg437bfv7o742pafl5bl9.apps.googleusercontent.com'
-            }
+            },
+            errorStatus: false
         }
     },
     methods:{
@@ -135,9 +136,11 @@ export default {
             this.showHome()
 
             })
-            .catch(function(err){
+            .catch((err) =>{
             console.log('masuk error login')
             console.log(err, 'ini errroorrrr')
+            this.errorStatus=true
+            
             })
 
         },
@@ -162,15 +165,17 @@ export default {
                 this.showHome()
 
                 })
-            .catch(function(err){
+            .catch((err)=>{
                 console.log('masuk error login')
                 console.log(err, 'ini errroorrrr')
+                 this.errorStatus=true
                 })
 
             },
         onSignInError (error) {
             console.log('error login google')
             console.log(error)
+            this.errorStatus=true
             }
         
 
@@ -213,6 +218,10 @@ label{
     color: white;
     font-weight: bold;
 
+}
+#text-error{
+    color: red;
+    font-weight: bold;
 }
 .g-signin-button {
   margin-left: 30%;
