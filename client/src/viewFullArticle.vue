@@ -1,5 +1,5 @@
 <template>
-    <div v-if="condition == 'readmore'">
+    <div v-if="condition == 'readmore'" style="margin-left: 10%; margin-top:7%">
         <h2 id="title" class="is-centered">{{article.title}}</h2>
         <figure >
             <img id="thumbnail-img" :src="article.thumbnail" alt="Thumbnail">
@@ -47,7 +47,7 @@ export default {
         font-weight: bold
     }
     #thumbnail-img{
-        margin-left: 25%;
+        margin-left: 30%;
         width: 400px;
         height: 300px
     }

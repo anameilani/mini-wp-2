@@ -1,7 +1,7 @@
-<template>
+<template>  
     <div v-if="page == 'home'">
         <!-- Navbar -->
-         <nav class="navbar has-shadow is-black" style="box-shadow: 10px 10px 5px lightgrey;">
+         <nav class="navbar has-shadow is-black is-fixed-top" style="box-shadow: 10px 10px 5px lightgrey;">
             <div class="navbar-brand" @click.prevent="showHome" id="icon-group">
                 <a href=""  id="logo-icon">
                     <i class="fas fa-blog"></i>
@@ -27,32 +27,32 @@
         <div class="row ">
         <div class="columns">
         <!-- Side Bar -->
-        <aside class="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile">
+        <aside class="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile" style="position: fixed">
             <p class="menu-label is-hidden-touch">Navigation</p>
             <ul class="menu-list">
             <li>
-                <a href="" class="has-background-grey-lighter" >
+                <a id="home-btn" href="" @click.prevent="showHome" >
                 <span class="icon"><i class="fa fa-home"></i></span> Home
                 </a>
             </li>
             <li>
-                <a href="" @click.prevent="showCreate">
+                <a id="newpost-btn" href="" @click.prevent="showCreate">
                 <span class="icon"><i class="fa fa-plus"></i></span> New Post
                 </a>
             </li>
             <li>
-                <a href="" class="is-active" @click.prevent="showMyPublish">
+                <a id="mypost-btn" href="" @click.prevent="showMyPublish">
                 <span class="icon"><i class="fa fa-table"></i></span> My Post
                 </a>
 
                 <ul>
                 <li>
-                    <a href="" @click.prevent="showMyPublish">
+                    <a id="mypublishedpost-btn" href="" @click.prevent="showMyPublish">
                     <span class="icon is-small"><i class="fa fa-link"></i></span> Published
                     </a>
                 </li>
                 <li>
-                    <a href="" @click.prevent="showMyDraft">
+                    <a id="mydraftpost-btn" href="" @click.prevent="showMyDraft">
                     <span class="icon is-small"><i class="fa fa-link"></i></span> Draft
                     </a>
                 </li>
@@ -62,7 +62,7 @@
             </ul>
         </aside>
         
-                <div class="column is-9" style="margin-left:4%">
+                <div class="column is-11" style="margin-left:4%">
                     <!-- Show All Published Post -->
                     <allPost 
                         :condition="condition"
@@ -160,20 +160,23 @@ export default {
     methods:{
         showHome(){
             this.condition= 'home'
+            this.classActive('home')
         },
         showCreate(){
             this.condition= 'create'
+            this.classActive('create')
         },
         showMyPublish(){
             this.condition= 'mypublished'
+            this.classActive('mypublished')
         },
         showMyDraft(){
             this.condition= 'mydraft'
+            this.classActive('mydraft')
         },
         showEdit(val, article){
             this.condition= val
             this.currentArticle= article
-            
         },
         changeConditionWithVal(val, article){
             this.condition= val
@@ -199,7 +202,7 @@ export default {
                 title: 'Are you sure to sign out?',
                 type: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#7a34eb',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes!'
             }).then((result) => {
@@ -222,9 +225,35 @@ export default {
                 
                 }
             })
-        }
-    }
+        },
+        classActive(id){
+            let homeBtn = document.getElementById('home-btn')
+            let newpostBtn = document.getElementById('newpost-btn')
+            let mypostBtn = document.getElementById('mypost-btn')
+            let mypubslihedpostBtn = document.getElementById('mypublishedpost-btn')
+            let mydraftpostBtn = document.getElementById('mydraftpost-btn')
 
+            homeBtn.classList.remove("is-active");
+            newpostBtn.classList.remove("is-active");
+            mypostBtn.classList.remove("is-active");
+            mypubslihedpostBtn.classList.remove("is-active");
+            mydraftpostBtn.classList.remove("is-active");
+
+            if(id == 'home')
+                homeBtn.classList.add("is-active")
+            else if(id == 'create')
+                newpostBtn.classList.add("is-active")
+            else if(id == 'mypublished'){
+                mypostBtn.classList.add("is-active")
+                mypubslihedpostBtn.classList.add("is-active")
+            }else if(id == 'mydraft') {
+                mypostBtn.classList.add("is-active")
+                mydraftpostBtn.classList.add("is-active")
+            }
+        }
+        
+    }
+    
 }
 </script>
 
@@ -243,5 +272,8 @@ export default {
         margin-left: 10%;
         margin-top: 10%
     }
+#home-btn:active{
+    background-color: blue;
+}
 
 </style>

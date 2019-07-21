@@ -1,15 +1,22 @@
 <template>
-    <div  class="container" v-if="condition == 'mypublished'">
+    <div  class="container" v-if="condition == 'mypublished'" style="margin-left:15%;">
         <h3 id="title">My Published Articles</h3>
+        <hr style="width: 975px;  margin-top:-2%; background-color:black">
+        
+        <div class="columns " v-if="mypublishedArticles.length == 0" style="margin-top:20px;">
+            <div class="column" >
+                <h3 style="text-align:center; font-size: 24px;">No Published Article</h3>
+            </div>
+        </div>
 
         <!-- Card Article -->
         <div v-for="article in mypublishedArticles" :key="article._id">
-        <div id="publish-card" class="card is-paddingless" >
+        <div id="publish-card" class="card is-paddingless" style="height:125px" >
             <div class="card-content is-paddingless">
                 <div class="content columns">
                     <div class="column is-one-quarter">
-                        <figure class=" is-48x48">
-                            <img :src="article.thumbnail">
+                        <figure>
+                            <img :src="article.thumbnail" style="width:150px; height:100px">
                         </figure>
                     </div>
                     <div class="column is-half" style="margin-top: 10px">
@@ -76,7 +83,7 @@ export default {
                 title: 'Delete this Articles?',
                 text: title,
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#2dcc72',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Sure!'
             })
@@ -122,8 +129,8 @@ export default {
        margin-bottom: 20px;
    }
     #title {
-       margin-top: 3%;
-       margin-bottom: 2%;
+       margin-top: 8%;
+       margin-bottom: 3%;
        text-align: center;
        font-size: 24px;
        font-weight: bold

@@ -1,5 +1,5 @@
 <template>
-    <div v-if="condition == 'editdraft'" style="margin-top: 2%">
+    <div v-if="condition == 'editdraft'" style="margin-top: 7%; margin-left:15%">
         <!-- Inner navbar -->
         <div class="columns is-mobile is-centered">
             <div class="column is-four-fifths">
@@ -137,12 +137,14 @@ export default {
                     }
                 })
                 .then(({data})=>{
-                    console.log(data)
-                    Swal.fire(
-                        'Your article have been publish!',
-                        'Published!',
-                        'success'
-                    )
+                    // console.log(data)
+                    Swal.fire({
+                        position: 'center',
+                        type: 'success',
+                        title: 'Your article have been published!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
                     this.$emit('changeComponent', 'home')
                     
                 })
@@ -176,13 +178,16 @@ export default {
                     }
                 })
                 .then(({data})=>{
-                    console.log(data)
-                    Swal.fire(
-                        'Your article have been saved!',
-                        'Published!',
-                        'success'
-                    )
-                        this.$emit('changeComponent', 'mydraft')
+                    // console.log(data)
+                    Swal.fire({
+                        position: 'center',
+                        type: 'success',
+                        title: 'Your article have been saved!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+
+                    this.$emit('changeComponent', 'mydraft')
                     
                 })
                 .catch(function(err){

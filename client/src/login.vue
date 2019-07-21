@@ -76,11 +76,11 @@
                 </form>
 
                 <h2 id="text-other">Login With Another Account:</h2><br>
-                <g-signin-button
+                <g-signin-button 
                     :params="googleSignInParams"
                     @success="onSignInSuccess"
                     @error="onSignInError">
-                    <i class="fab fa-google"></i> Sign in with Google
+                    <i class="fab fa-google" style="color: red"></i> Sign in with Google
                 </g-signin-button>
 
             </div>
@@ -215,13 +215,13 @@ label{
 
 }
 .g-signin-button {
-  /* This is where you control how the button looks. Be creative! */
+  margin-left: 30%;
   display: inline-block;
   padding: 4px 8px;
   border-radius: 3px;
-  background-color: #3c82f7;
-  color: #fff;
-  box-shadow: 0 3px 0 #0f69ff;
+  background-color: white;
+  color: black;
+  box-shadow: 0 3px 0 gray;
 }
 
 

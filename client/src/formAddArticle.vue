@@ -1,5 +1,5 @@
 <template>
-    <div v-if="condition == 'create'" style="margin-top: 2%">
+    <div v-if="condition == 'create'" style="margin-top: 7%;margin-left:15%">
         <!-- Inner navbar -->
         <div class="columns is-mobile is-centered">
             <div class="column is-four-fifths">
@@ -145,11 +145,13 @@ export default {
             })
                 .then(({data})=>{
                     console.log(data)
-                    Swal.fire(
-                        'Your article have been published!',
-                        'Published!',
-                        'success'
-                    )
+                    Swal.fire({
+                        position: 'center',
+                        type: 'success',
+                        title: 'Your article have been published!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
 
                     this.showHome()
                     
@@ -183,12 +185,14 @@ export default {
                 }
             })
                 .then(({data})=>{
-                    console.log(data)
-                    Swal.fire(
-                        'Your article have been saved!',
-                        'Published!',
-                        'success'
-                    )
+                    // console.log(data)
+                    Swal.fire({
+                        position: 'center',
+                        type: 'success',
+                        title: 'Your article have been saved!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
 
                     this.showDraft()
                     

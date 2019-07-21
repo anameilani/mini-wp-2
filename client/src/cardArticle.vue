@@ -15,7 +15,8 @@
                 </div>
 
                 <div class="content">
-                    <p v-html="content"></p><span><p @click="triggerReadmore">...Readmore</p></span>
+                    <p v-html="content"></p>
+                    <a class="button is-info is-small is-pulled-right" @click="triggerReadmore">Read Full Article</a>
                     <div class="tags">
                         <span v-for="(tag, index) in article.tags" 
                             :key="index"
@@ -53,7 +54,12 @@ export default {
     },
     mounted(){
         this.createdDate= moment(this.article.createdDate).format("dddd, MMMM Do YYYY")
-        this.content= this.article.content.substring(0,200)
+        if(this.article.content.length>200){
+
+            this.content= this.article.content.substring(0,200)+' .....'
+        }else{
+            this.content= this.article.content
+        }
     }
     
 }

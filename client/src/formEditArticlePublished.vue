@@ -1,5 +1,5 @@
 <template>
-    <div v-if="condition == 'editpublish'" style="margin-top: 2%">
+    <div v-if="condition == 'editpublish'" style="margin-top: 7%; margin-left:15%">
         <!-- Inner navbar -->
         <div class="columns is-mobile is-centered">
             <div class="column is-four-fifths">
@@ -138,11 +138,13 @@ export default {
                 })
                 .then(({data})=>{
                     console.log(data)
-                    Swal.fire(
-                        'Your article have been saved!',
-                        'Published!',
-                        'success'
-                    )
+                    Swal.fire({
+                        position: 'center',
+                        type: 'success',
+                        title: 'Your article have been saved!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
 
                     this.showBack()
                     
@@ -164,7 +166,7 @@ export default {
                 title: 'Delete this Articles?',
                 text: title,
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#2dcc72',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Sure!'
             })
@@ -178,11 +180,13 @@ export default {
                             }
                     })
                     .then(data=>{
-                        Swal.fire(
-                            'Your article have been deleted!',
-                            'Deleted!',
-                            'success'
-                        )
+                        Swal.fire({
+                            position: 'center',
+                            type: 'success',
+                            title: 'Your article have been deleted!',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
                        this.showBack()
                     })
                     .catch(function(err){

@@ -1,5 +1,5 @@
 <template>
-    <div v-if="condition == 'preview'">
+    <div v-if="condition == 'preview'" style="margin-left: 10%; margin-top:7%">
         <div id="close-btn">
             <a  class="is-pulled-right" href="#" @click.prevent="showBack">
                 <i class="fas fa-times"></i> Close

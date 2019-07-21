@@ -1,8 +1,8 @@
 <template>
     <div v-if="condition == 'home'">
         
-        <div class="field is-grouped column is-three-fifths is-offset-one-fifth">
-            <div class="field-label is-normal">
+        <div class="field is-grouped column is-three-fifths is-offset-one-fifth" style="margin-top:7%;">
+            <div class="field-label is-normal" >
                 <label class="label">Keyword: </label>
             </div>
             <div class="control">
@@ -16,14 +16,15 @@
                     <select>
                     <option value="title">Title</option>
                     <option value="tag">Tag</option>
+                    <option value="author">Author</option>
                     </select>
                 </div>
             </div>
-            <a class="button is-danger is-rounded" @click="fetchAllPost">Reset</a>
+            <a class="button is-danger is-rounded" @click="reset">Reset</a>
         </div>
         <div class="row" v-if="filterArticle.length != 0">
             <div class="colums  is-centered" >
-                <div class="column is-half" v-for="data in filterArticle" :key="data._id" >
+                <div class="column is-half" v-for="data in filterArticle" :key="data._id" style="margin-left:30%">
                     <cardArticle 
                         :article="data" 
                         @searchTag="fetchSearchTag"
@@ -33,9 +34,9 @@
             </div>
         </div>
 
-        <div class="columns " v-if="filterArticle.length == 0">
+        <div class="columns " v-if="filterArticle.length == 0" style="margin-top:20px;">
             <div class="column" >
-                <h3 style="text-align:center">Article Not Found</h3>
+                <h3 style="text-align:center; font-size: 24px;">Article Not Found</h3>
             </div>
         </div>
     </div>
@@ -102,6 +103,11 @@ export default {
                  console.log('error serach tag')
                  console.log(err)
              })
+        },
+        reset(){
+            this.type='title'
+            this.keyword=''
+            this.fetchAllPost()
         }
     },
     watch:{
@@ -135,23 +141,28 @@ export default {
                
             }
             else if(this.type == 'tag'){
-                console.log('masuk sini')
-                // let dataFilter= this.articles.filter(article => {
-                //     console.log(article.tags, this.keyword, '====')
-                //     return article.tags.filter.toLowerCase().includes(this.keyword.toLowerCase())
+
                 let dataFilter=[]
-                return this.articles.forEach(article =>{
+                this.articles.forEach(article =>{
+                    console.log('jalan for each')
                     if(article.tags.includes(this.keyword)){
-                         return dataFilter.push(article)
+                         dataFilter.push(article)
                     }
                     
                 })
-                    
-                
+
+                if(dataFilter.length === 0) return this.articles
+                    else return dataFilter
+                    this.keyword=''
+            }
+            else if(this.type == 'author'){
+                let dataFilter= this.articles.filter(article => {
+                    return article.author.name.toLowerCase().includes(this.keyword.toLowerCase())
+                })
 
                 // if(dataFilter.length === 0) return this.articles
-                //     else 
-                    return dataFilter
+                //     else
+                     return dataFilter
             }
         }
     }

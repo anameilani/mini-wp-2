@@ -1,13 +1,21 @@
 <template>
-    <div v-if="condition == 'mydraft'">
+    <div v-if="condition == 'mydraft'" style=" margin-left:15%;">
         <h3 id="title">My Draft Articles</h3>
+        <hr style="width: 975px; margin-top:-2%; background-color:black">
+
+        <div class="columns " v-if="mydraftPosts.length == 0" style="margin-top:20px;">
+            <div class="column" >
+                <h3 style="text-align:center; font-size: 24px;">No Draft Article</h3>
+            </div>
+        </div>
+
         <!-- Card Article -->
-        <div id="publish-card" class="card" v-for="article in mydraftPosts" :key="article._id">
+        <div id="draft-card" class="card" v-for="article in mydraftPosts" :key="article._id" style="height:125px; margin-bottom:20px" >
             <div class="card-content is-paddingless">
                 <div class="content columns">
                     <div class="column is-one-quarter">
-                        <figure class=" is-64x64">
-                            <img :src="article.thumbnail">
+                        <figure >
+                            <img :src="article.thumbnail" style="width:150px; height:100px">
                         </figure>
                     </div>
                     <div class="column is-half">
@@ -111,11 +119,13 @@ export default {
                             }
                     })
                     .then(data=>{
-                        Swal.fire(
-                            'Your article have been deleted!',
-                            'Deleted!',
-                            'success'
-                        )
+                        Swal.fire({
+                            position: 'center',
+                            type: 'success',
+                            title: 'Your article have been deleted!',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
                         this.fetchDrat()
                     })
                     .catch(function(err){
@@ -139,8 +149,8 @@ export default {
 
 <style scoped>
    #title {
-       margin-top: 3%;
-       margin-bottom: 2%;
+       margin-top: 8%;
+       margin-bottom: 3%;
        text-align: center;
        font-size: 24px;
        font-weight: bold

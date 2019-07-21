@@ -5,7 +5,7 @@ const {ObjectId}= require('mongodb')
 class articleController{
 
     static getStatus(req, res, next){
-        console.log('masuk get publish', req.decode.id, req.params.status)
+        // console.log('masuk get publish', req.decode.id, req.params.status)
         Article.find({author: req.decode.id, status: req.params.status})
         .populate('author')
         .sort({createdAt: -1})
@@ -66,7 +66,7 @@ class articleController{
 
             Article.findById(req.params.id)
             .then(article =>{
-                console.log(article, 'article yang ketemu update put')
+                // console.log(article, 'article yang ketemu update put')
                 
                 article.title= req.body.title || article.title
                 article.thumbnail= req.file.cloudStoragePublicUrl || article.thumbnail
